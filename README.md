@@ -12,6 +12,15 @@ We can do the redeployment of a single service without coordinating the deployme
 
 Sure, using a gateway service this becomes a single point of failure to our architecture, so we need to deploy at least two replicas of it to have high availability. But I will leave this problem for you to play with. :)
 
+## Service self-registration
+Before getting into implementation details how to implement self-registration to Consul, let’s look into how service discovery with self-registration really works.
+
+In a first step a service instance registers itself to the service discovery service by providing its name and address. After this gateway is able to get address of this service by querying the Consul service discovery by its name.
+
+The **key thing to note** is that the service instances are registered with a **unique service ID** in order to disambiguate between instances of **ValueService** which are running on the same **Consul** service. **It is required that all services have a unique ID per node**, so if names might conflict (which is our case) then unique IDs must be provided.
+
+![](res/ServiceRegistration.jpg)
+
 ## Architecture
 ![](res/Architecture.jpg)
 
